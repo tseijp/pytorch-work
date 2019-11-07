@@ -20,7 +20,6 @@
   * .toeファイルのディレクトリまでcd
   * `"C:\~~\TouchDesigner099\bin\python.exe" -m venv .venv` -> `.venv\Scripts\activate.bat`
   * [install PyTorch](https://pytorch.org/)
-  *
 
 ### how to git
   * `!git status`(指定したデータが無視されているか確認)

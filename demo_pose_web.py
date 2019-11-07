@@ -52,8 +52,7 @@ model.float()
 model.eval()
 
 if __name__ == "__main__":
-
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
     while True:
         # Capture frame-by-frame
