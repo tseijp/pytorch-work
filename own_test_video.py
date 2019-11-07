@@ -1,5 +1,7 @@
 ### Copyright (C) 2017 NVIDIA Corporation. All rights reserved. 
 ### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import os
 from collections import OrderedDict
 from options.test_options import TestOptions
@@ -51,7 +53,7 @@ for i in tqdm(range(start_from, dataset.clip_length)):
     imsave('./datasets/own_dance_test/test_sync/{:05d}.png'.format(i), util.tensor2im(prev_frame))
     generated.append(util.tensor2im(prev_frame))
 
-# ffmpegでError出る    
+
 '''
 result_dir = os.path.join(opt.results_dir, opt.name, opt.which_epoch)
 if not os.path.isdir(result_dir):
