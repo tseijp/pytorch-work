@@ -26,7 +26,7 @@ from lib.config import cfg, update_config
 #from lib.utils.paf_to_pose import paf_to_pose_cpp
 
 # my created
-from utils import get_outputs, paf_to_pose_cpp
+from utils.pose_utils import get_outputs, paf_to_pose_cpp
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--cfg', help='experiment configure file name',
