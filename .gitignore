@@ -1,9 +1,12 @@
 # my changed dir ==========
 Backup/
-checkpoint/*
+# pose
 train/
 lib/pafprocess/build/*
-demo
+
+# edn
+checkpoint/*
+demo/
 
 # my changed file ==========
 *.pth

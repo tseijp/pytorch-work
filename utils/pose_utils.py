@@ -12,7 +12,7 @@ from lib.datasets.preprocessing import rtpose_preprocess#(inception_preprocess,
                                         #rtpose_preprocess,
                                         #ssd_preprocess, vgg_preprocess)
 
-def get_outputs(img, model, preprocess):
+def get_outputs(img, model, preprocess, is_gpu=False):
     inp_size = cfg.DATASET.IMAGE_SIZE
     # padding
     im_croped, im_scale, real_shape = im_transform.crop_with_factor(
@@ -26,6 +26,9 @@ def get_outputs(img, model, preprocess):
     batch_images= np.expand_dims(im_data, 0)
     # several scales as a batch
     batch_var = torch.from_numpy(batch_images).float()#.cuda().float()
+    if is_gpu:
+        batch_var = batch_var.cuda().float()
+
     predicted_outputs, _ = model(batch_var)
     output1, output2 = predicted_outputs[-2], predicted_outputs[-1]
     heatmap = output2.cpu().data.numpy().transpose(0, 2, 3, 1)[0]
