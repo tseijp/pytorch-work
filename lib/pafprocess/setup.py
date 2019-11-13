@@ -8,7 +8,7 @@ setup(name='pafprocess_ext', version='1.0',
         Extension('_pafprocess', ['pafprocess.cpp', 'pafprocess.i'],
                   swig_opts=['-c++'],
                   depends=["pafprocess.h"],
-                  include_dirs=[numpy.get_include(), '.'])
+                  include_dirs=[numpy.get_include(), '.'],)
     ],
     py_modules=[
         "pafprocess"

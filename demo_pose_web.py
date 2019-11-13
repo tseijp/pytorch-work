@@ -24,7 +24,7 @@ from lib.network.rtpose_vgg import get_model
 #from lib.utils.common import Human, BodyPart, CocoPart, CocoColors, CocoPairsRender
 from lib.pafprocess import pafprocess
 # my created
-from utils.pose_utils import get_outputs, paf_to_pose_cpp, find_peaks
+from util.pose_utils import get_outputs, paf_to_pose_cpp, find_peaks
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--cfg', help='experiment configure file name',
