@@ -3,8 +3,8 @@
 import os
 from collections import OrderedDict
 from options.test_options import TestOptions
-from data.custom_dataset_data_loader import CreateDataset
-from models.models import create_model
+from data.load_data import load_dataset
+from models.load_model import load_model
 import util.util as util
 import torch
 from imageio import get_writer
@@ -17,10 +17,10 @@ opt.batchSize = 1  # test code only supports batchSize = 1
 opt.serial_batches = True  # no shuffle
 opt.no_flip = True  # no flip
 
-dataset = CreateDataset(opt)
+dataset = load_dataset(opt)
 
 # test
-model = create_model(opt)
+model = load_model(opt)
 if opt.verbose:
     print(model)
 
@@ -51,7 +51,7 @@ for i in tqdm(range(start_from, dataset.clip_length)):
     imsave('./datasets/own_dance_test/test_sync/{:05d}.png'.format(i), util.tensor2im(prev_frame))
     generated.append(util.tensor2im(prev_frame))
 
-# ffmpegでError出る    
+# ffmpegError
 '''
 result_dir = os.path.join(opt.results_dir, opt.name, opt.which_epoch)
 if not os.path.isdir(result_dir):

@@ -8,6 +8,11 @@ pose/pose_estimator.h5
 pose/pose_model.pth
 # edn
 checkpoint/*
+datasets/train_A/*
+datasets/train_B/*
+datasets/test_A/*
+datasets/test_B/*
+datasets/own_dance_test/test_sync/*
 demo/
 data/*.mkv
 data/*.mp4
