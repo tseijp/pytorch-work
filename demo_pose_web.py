@@ -24,7 +24,7 @@ from lib.network.rtpose_vgg import get_model
 #from lib.utils.common import Human, BodyPart, CocoPart, CocoColors, CocoPairsRender
 from lib.pafprocess import pafprocess
 # my created
-from utils.pose_utils import get_outputs, paf_to_pose_cpp, find_peaks
+from util.pose_utils import get_outputs, paf_to_pose_cpp, find_peaks
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--cfg', help='experiment configure file name',
@@ -41,7 +41,7 @@ args = parser.parse_args()
 # update config file
 update_config(cfg, args)
 
-weight_name = os.path.join(os.getcwd(), 'pose_model.pth')
+weight_name = os.path.join(os.getcwd(), 'pose/pose_model.pth')
 #'/home/tensorboy/Downloads/pose_model.pth'                           my changed
 
 model = get_model('vgg19')
@@ -52,8 +52,7 @@ model.float()
 model.eval()
 
 if __name__ == "__main__":
-
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
     while True:
         # Capture frame-by-frame

@@ -60,16 +60,26 @@ error
     * error:`cannot run ‘rc.exe'`->`C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0\x64\rc.exe, rcdll.dll を C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin` にコピー
     * error:`Unable to find vcvarsall.bat`-> コンパイラを入れる[参考](https://blog.sky-net.pw/article/25)
 
-### how to start TouchDesigner (Coming soon)
+## Blender
+### how to chroma key
+  * install [Blender](https://www.blender.org/download/)
+  * open `chromaKey.blend` and move `Laoout tag` and change circle shape
+  * move `Compositer tag`, set your video in MovieClip and rendering video
+  * run
+## TouchDesigner (Coming soon)
+### how to start TouchDesigner
   * .toeファイルのディレクトリまでcd
   * `"C:\~~\TouchDesigner099\bin\python.exe" -m venv .venv` -> `.venv\Scripts\activate.bat`
   * [install PyTorch](https://pytorch.org/)
+<<<<<<< HEAD
+=======
 
 ### how to linux
 * `du -h -d 3 | sort -hr | head -10` : ファイルの容量のランキング
 * `ls -tl` : ファイルの更新時間を表示
 * `ls -1 | wc -l` : ファイル数を表示
 * `ssh -vvv {hostname}` : sshのエラーログ出力(Permision Denied時)
+>>>>>>> 6e677432752f96f29de73d6afd82c0f1b1e1f5a9
 
 ### how to git
   * `!git status`

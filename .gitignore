@@ -1,26 +1,37 @@
 # my changed dir ==========
 Backup/
+tmp/*
+
 # pose
 train/
 lib/pafprocess/build/*
+pose/pose_estimator.h5
+pose/pose_model.pth
 
 # edn
-<<<<<<< HEAD
 checkpoints/*
 datasets/*
-=======
-checkpoint/*
->>>>>>> 6e677432752f96f29de73d6afd82c0f1b1e1f5a9
+demo/
+data/*.mkv
+data/*.mp4
 datasets/train_A/*
 datasets/train_B/*
 datasets/test_A/*
 datasets/test_B/*
+datasets/poses.npy
 datasets/own_dance_test/test_sync/*
 demo/
 pose_estimator/*
 
+
 # my changed file ==========
+*.h5
 *.pth
+*.png
+*.mkv
+*.avi
+*.mp4
+*.npy
 
 # ------------------------------------------------------------------------------
 
@@ -116,7 +127,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+#lib/ # my changed
 lib64/
 parts/
 sdist/

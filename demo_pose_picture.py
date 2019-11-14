@@ -26,7 +26,7 @@ from lib.config import cfg, update_config
 #from lib.utils.paf_to_pose import paf_to_pose_cpp
 
 # my created
-from utils.pose_utils import get_outputs, paf_to_pose_cpp
+from util.pose_utils import get_outputs, paf_to_pose_cpp
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--cfg', help='experiment configure file name',
@@ -43,7 +43,7 @@ args = parser.parse_args()
 update_config(cfg, args)
 
 
-weight_name = os.path.join(os.getcwd(), 'pose_model.pth')#'/home/tensorboy/Downloads/pose_model.pth'
+weight_name = os.path.join(os.getcwd(), 'pose/pose_model.pth')#'/home/tensorboy/Downloads/pose_model.pth'
 
 model = get_model('vgg19')
 model.load_state_dict(torch.load(weight_name))
@@ -51,8 +51,9 @@ model = torch.nn.DataParallel(model)#.cuda()
 model.float()
 model.eval()
 
-test_image = './readme/ski.jpg'
+test_image = 'datasets/test_pose.png'
 oriImg     = cv2.imread(test_image) # B,G,R order
+print(oriImg.shape)
 #shape_dst  = np.min(oriImg.shape[0:2])
 
 # Get results of original image
@@ -63,3 +64,5 @@ print(im_scale)
 humans = paf_to_pose_cpp(heatmap, paf, cfg) #error
 out = draw_humans(oriImg, humans)
 cv2.imwrite('result.png',out)
+
+print(human)

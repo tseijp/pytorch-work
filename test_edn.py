@@ -6,7 +6,7 @@ from tqdm import tqdm
 from imageio import get_writer
 from collections import OrderedDict
 
-from utils   import edn_utils as util
+from util    import edn_utils as util
 from models  import load_model
 from data    import load_data
 from pose    import pose_estimator
