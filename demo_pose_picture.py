@@ -43,7 +43,7 @@ args = parser.parse_args()
 update_config(cfg, args)
 
 
-weight_name = os.path.join(os.getcwd(), 'pose_model.pth')#'/home/tensorboy/Downloads/pose_model.pth'
+weight_name = os.path.join(os.getcwd(), 'pose/pose_model.pth')#'/home/tensorboy/Downloads/pose_model.pth'
 
 model = get_model('vgg19')
 model.load_state_dict(torch.load(weight_name))
@@ -51,8 +51,9 @@ model = torch.nn.DataParallel(model)#.cuda()
 model.float()
 model.eval()
 
-test_image = './readme/ski.jpg'
+test_image = 'datasets/test_pose.png'
 oriImg     = cv2.imread(test_image) # B,G,R order
+print(oriImg.shape)
 #shape_dst  = np.min(oriImg.shape[0:2])
 
 # Get results of original image
@@ -63,3 +64,5 @@ print(im_scale)
 humans = paf_to_pose_cpp(heatmap, paf, cfg) #error
 out = draw_humans(oriImg, humans)
 cv2.imwrite('result.png',out)
+
+print(human)

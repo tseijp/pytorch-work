@@ -41,7 +41,7 @@ args = parser.parse_args()
 # update config file
 update_config(cfg, args)
 
-weight_name = os.path.join(os.getcwd(), 'pose_model.pth')
+weight_name = os.path.join(os.getcwd(), 'pose/pose_model.pth')
 #'/home/tensorboy/Downloads/pose_model.pth'                           my changed
 
 model = get_model('vgg19')
