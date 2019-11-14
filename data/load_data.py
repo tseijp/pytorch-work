@@ -1,3 +1,7 @@
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # import torch.utils.data as data
 #from PIL import Image
 #import torchvision.transforms as transforms

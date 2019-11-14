@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import os.path
 from data import image_transform#get_params, get_transform, normalize
 from data import image_folder# .image_folder import make_dataset

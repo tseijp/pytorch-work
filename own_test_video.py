@@ -1,7 +1,8 @@
-### Copyright (C) 2017 NVIDIA Corporation. All rights reserved. 
-### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+### Copyright (C) 2017 NVIDIA Corporation. All rights reserved. 
+### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
+
 import os
 from collections import OrderedDict
 from options.test_options import TestOptions
@@ -12,6 +13,7 @@ import torch
 from imageio import get_writer
 import numpy as np
 from tqdm import tqdm
+import time
 
 opt = TestOptions().parse(save=False)
 opt.nThreads = 1   # test code only supports nThreads = 1
@@ -26,9 +28,14 @@ model = load_model(opt)
 if opt.verbose:
     print(model)
 
+
+def my_makedirs(path):
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    
 # test whole video sequence
 # 20181009: do we use first frame as input?
-
+time_now = str(time.gmtime().tm_year) + str(time.gmtime().tm_mon) + str(time.gmtime().tm_mday) + str(time.gmtime().tm_hour) + str(time.gmtime().tm_min)
 data = dataset[0]
 if opt.use_first_frame:
     prev_frame = data['image']
@@ -49,15 +56,10 @@ for i in tqdm(range(start_from, dataset.clip_length)):
 
     cur_frame = model.inference(label, inst, torch.unsqueeze(prev_frame, dim=0))
     prev_frame = cur_frame.data[0]
-    
-    imsave('./datasets/own_dance_test/test_sync/{:05d}.png'.format(i), util.tensor2im(prev_frame))
+    new_dir_path_recursive = '.datasets/own_dance_test/test_sync'+str(time_now)
+    my_makedirs(new_dir_path_recursive)
+    imsave(new_dir_path_recursive+'/{:05d}.png'.format(i), util.tensor2im(prev_frame))
     generated.append(util.tensor2im(prev_frame))
-
-<<<<<<< HEAD
-
-=======
-# ffmpegError
->>>>>>> 6e677432752f96f29de73d6afd82c0f1b1e1f5a9
 '''
 result_dir = os.path.join(opt.results_dir, opt.name, opt.which_epoch)
 if not os.path.isdir(result_dir):
