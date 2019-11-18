@@ -253,12 +253,13 @@ if __name__ == "__main__":
 
     model = load_model('./pose/pose_estimator.h5')
     img_list = os.listdir(img_dir)
+    new_list = [i for i in img_list if not i in old_list]
     # get frame shape
     tmp = imread(os.path.join(img_dir, img_list[0]))
     im_shape = tmp.shape[:-1]
 
     pose_cords = []
-    for item in tqdm(img_list):
+    for item in tqdm(new_list): # my changed
         img = imread(os.path.join(img_dir, item))
         cord = cordinates_from_image_file(img, model=model)
         pose_cords.append(cord)
