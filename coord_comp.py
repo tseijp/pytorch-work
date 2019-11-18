@@ -249,7 +249,7 @@ if __name__ == "__main__":
     pose_npy_name = img_dir.replace('train_B', 'poses.npy')
     if not os.path.isdir(pose_dir):
         os.mkdir(pose_dir)
-    img_dir = img_dir.replace('train_B', 'test_pose')
+    #img_dir = img_dir.replace('train_B', 'test_pose')
 
     model = load_model('./pose/pose_estimator.h5')
     img_list = os.listdir(img_dir)
@@ -258,12 +258,17 @@ if __name__ == "__main__":
     tmp = imread(os.path.join(img_dir, img_list[0]))
     im_shape = tmp.shape[:-1]
 
+<<<<<<< HEAD
     pose_cords = []
     for item in tqdm(new_list): # my changed
+=======
+    #pose_cords = []
+    for item in tqdm(img_list):
+>>>>>>> ff33a84da0073e6787adc36b721c6433c3290787
         img = imread(os.path.join(img_dir, item))
         cord = cordinates_from_image_file(img, model=model)
-        pose_cords.append(cord)
+        #pose_cords.append(cord)
         color,_ = draw_pose_from_cords(cord, im_shape)
         imsave(os.path.join(pose_dir, item), color)
 
-    np.save(pose_npy_name, np.array(pose_cords, dtype=np.int))
+    #np.save(pose_npy_name, np.array(pose_cords, dtype=np.int))

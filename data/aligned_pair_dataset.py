@@ -12,7 +12,7 @@ import torch.utils.data as data
  For testing: N can be arbitrary length
 '''
 '''
-使ってそうなopt
+opt
 .dataroot
 .label_nc
 .phase
@@ -44,10 +44,10 @@ class AlignedPairDataset(BaseDataset):
         self.A_paths = sorted(image_folder.make_dataset(self.dir_A))
 
         ### input B (real images)
-        #if opt.isTrain:
-        dir_B = '_B' if self.opt.label_nc == 0 else '_img'
-        self.dir_B = os.path.join(opt.dataroot, opt.phase + dir_B)
-        self.B_paths = sorted(image_folder.make_dataset(self.dir_B))
+        if opt.isTrain:
+            dir_B = '_B' if self.opt.label_nc == 0 else '_img'
+            self.dir_B = os.path.join(opt.dataroot, opt.phase + dir_B)
+            self.B_paths = sorted(image_folder.make_dataset(self.dir_B))
 
         ### instance maps
         if not opt.no_instance:
@@ -63,11 +63,11 @@ class AlignedPairDataset(BaseDataset):
         self.dataset_size = len(self.A_paths)
 
         ### define clip length
-        #if opt.isTrain:
-        #    self.clip_length = 2
-        #else: # my changed
-        self.clip_length = min(opt.clip_length, len(self.A_paths))
-        print(len(self.A_paths), self.clip_length)
+        if opt.isTrain:
+            self.clip_length = 2
+        else: # my changed
+            self.clip_length = min(opt.clip_length, len(self.A_paths))
+            print(len(self.A_paths), self.clip_length)
 
     def __getitem__(self, index):
         ### input A (label maps)

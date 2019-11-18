@@ -3,8 +3,8 @@
 import time
 from collections import OrderedDict
 from options.train_options import TrainOptions
-from data.data_loader import CreateDataLoader
-from models.models import create_model
+from data.load_data import load_data_loader#CreateDataLoader
+from models.load_model import load_model#create_model
 
 import util.util as util
 from util.visualizer import Visualizer
@@ -40,7 +40,7 @@ if opt.debug:
     opt.max_dataset_size = 50
 
 # TODO: Create A New DataLoader that loads two consecutive pose/frame pairs
-data_loader = CreateDataLoader(opt)
+data_loader = load_data_loader(opt) #CreateDataLoader(opt) #error
 dataset = data_loader.load_data()
 dataset_size = len(data_loader)
 print('#training images = %d' % dataset_size)
@@ -49,7 +49,7 @@ print('#training images = %d' % dataset_size)
 visualizer = Visualizer(opt)
 
 # my changed
-model = create_model(opt)
+model = load_model(opt)#create_model(opt)
 model = DataParallel(model.module, device_ids=[0,1,2,3]).cuda()
 torch.backends.cudnn.benchmark = True
 
