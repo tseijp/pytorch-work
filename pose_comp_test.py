@@ -244,27 +244,24 @@ def check_validity(img, thres=70, keypoint_num=18):
 
 
 if __name__ == "__main__":
-    img_dir = './datasets/train_B'  # Change this line into where your video frames are stored
-    pose_dir = img_dir.replace('train_B', 'train_A')
-    pose_npy_name = img_dir.replace('train_B', 'poses.npy')
+    img_dir = './datasets/test_B'  # Change this line into where your video frames are stored
+    pose_dir = img_dir.replace('test_B', 'test_A')
+    pose_npy_name = img_dir.replace('test_B', 'poses.npy')
     if not os.path.isdir(pose_dir):
         os.mkdir(pose_dir)
-    #img_dir = img_dir.replace('train_B', 'test_pose')
-
+    #img_dir = img_dir.replace('test_B', 'test_pose')
+    
     model = load_model('./pose/pose_estimator.h5')
+    comped_list = os.listdir(pose_dir)
     img_list = os.listdir(img_dir)
-    new_list = [i for i in img_list if not i in old_list]
+    new_list = [i for i in img_list if not i in comped_list]
     # get frame shape
     tmp = imread(os.path.join(img_dir, img_list[0]))
     im_shape = tmp.shape[:-1]
 
-<<<<<<< HEAD
-    pose_cords = []
-    for item in tqdm(new_list): # my changed
-=======
     #pose_cords = []
-    for item in tqdm(img_list):
->>>>>>> ff33a84da0073e6787adc36b721c6433c3290787
+    #for item in tqdm(img_list):
+    for item in tqdm(new_list): # my changed
         img = imread(os.path.join(img_dir, item))
         cord = cordinates_from_image_file(img, model=model)
         #pose_cords.append(cord)

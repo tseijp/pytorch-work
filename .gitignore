@@ -9,7 +9,6 @@ pose/pose_estimator.h5
 pose/pose_model.pth
 
 # edn
-checkpoint/*
 demo/
 data/*.mkv
 data/*.mp4
@@ -19,6 +18,8 @@ datasets/test_A/*
 datasets/test_B/*
 datasets/poses.npy
 datasets/own_dance_test/test_sync/*
+checkpoints/everybody_dance_now_pwcflow/*.pth
+checkpoints/everybody_dance_now_temporal/*.pth
 
 # my changed file ==========
 *.h5

@@ -66,20 +66,41 @@ error
   * open `chromaKey.blend` and move `Laoout tag` and change circle shape
   * move `Compositer tag`, set your video in MovieClip and rendering video
   * run
-## TouchDesigner (Coming soon)
-### how to start TouchDesigner
-  * .toeファイルのディレクトリまでcd
-  * `"C:\~~\TouchDesigner099\bin\python.exe" -m venv .venv` -> `.venv\Scripts\activate.bat`
-  * [install PyTorch](https://pytorch.org/)
-<<<<<<< HEAD
-=======
+
+## TouchDesigner
+### how to PyTorch
+* rule1: don't use pip! get-pip.py is absurd!
+* rule2: td can't find out module if it's no `__init__.py` and in dir
+* download TouchDesigner and Anaconda3
+* run `conda create -n td python=3.5.4 anaconda` and `conda activate td`
+* run `mlink /d site-packages path-to-anaconda/site-packages` in `to-td/bin/`
+    * if you create new DLLs by this way, you will see ...
+    * `..from _ctypes import Union, Structure, Array`
+    * `ImportError: DLL load failed: 指定されたプロシージャが見つかりません。`
+* delete `path-to-td/bin/Lib/site-packages`
+* install [PyTorch](https://pytorch.org/) for your cuda version
+* `pip install opencv-python`
+    * ~`conda install -c https://conda.binstar.org/menpo opencv3`~`
+    * if you see error no module cv2, put cv2.pyd in dir and make `__init__.py`
+* download from [Anaconda Cloud](https://anaconda.org/anaconda/intel-openmp/files) and overwrite to `to-td-path/bin/`
+    * if you see `DLL load failed` for `torch._C`, this solve error.
+    * libiomp5md.dll, libiomp5mmd.pdb libiompstubs5md.dll
+
+### how to Spout
+* `conda install -c anaconda pyopengl=3.1.1a1`
+* `conda install -c cogsci pygame`
+* clone [Spout-for-Python](https://github.com/spiraltechnica/Spout-for-Python)
+    * copy `Liblaly/SpoutSDK.pyd` in `to-env/lib/site-packages`
+    * run `python Example/hello.py`
+
+### how to demo
+* `pip install yacs`
 
 ### how to linux
 * `du -h -d 3 | sort -hr | head -10` : ファイルの容量のランキング
 * `ls -tl` : ファイルの更新時間を表示
 * `ls -1 | wc -l` : ファイル数を表示
 * `ssh -vvv {hostname}` : sshのエラーログ出力(Permision Denied時)
->>>>>>> 6e677432752f96f29de73d6afd82c0f1b1e1f5a9
 
 ### how to git
   * `!git status`

@@ -1,4 +1,4 @@
-### Copyright (C) 2017 NVIDIA Corporation. All rights reserved. 
+### Copyright (C) 2017 NVIDIA Corporation. All rights reserved.
 ### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 import os
 from collections import OrderedDict
@@ -47,7 +47,7 @@ for i in tqdm(range(start_from, dataset.clip_length)):
 
     cur_frame = model.inference(label, inst, torch.unsqueeze(prev_frame, dim=0))
     prev_frame = cur_frame.data[0]
-    
+
     imsave('./datasets/own_dance_test/test_sync/{:05d}.png'.format(i), util.tensor2im(prev_frame))
     generated.append(util.tensor2im(prev_frame))
 

@@ -1,31 +1,15 @@
 import os
-#import re
-#import sys
+import sys
 import cv2
-#import math
-#import time
-#import scipy
-import argparse
-#import matplotlib
-import numpy as np
-#import pylab as plt
 import torch
-#import torch.nn as nn
-#import torch.nn.functional as F
-#from torch.autograd import Variable
-#from collections import OrderedDict
-#from scipy.ndimage.morphology import generate_binary_structure
-#from scipy.ndimage.filters import gaussian_filter, maximum_filter
+import numpy as np
+import argparse
 from lib.config import cfg, update_config
 from lib.utils.common import draw_humans
 from lib.network.rtpose_vgg import get_model
-#from lib.network import im_transform
-#from evaluate.coco_eval import get_outputs, handle_paf_and_heat
-#from lib.utils.common import Human, BodyPart, CocoPart, CocoColors, CocoPairsRender
 from lib.pafprocess import pafprocess
 # my created
 from util.pose_utils import get_outputs, paf_to_pose_cpp, find_peaks
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--cfg', help='experiment configure file name',
                     default='./experiments/vgg19_368x368_sgd.yaml', type=str)# my changed
