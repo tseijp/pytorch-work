@@ -10,12 +10,13 @@ from tensorflow.keras.models import load_model
 # from cpu
 import argparse
 import torch
+from pose_comp import cordinates_from_image_file
 from lib.config import cfg, update_config
 from lib.utils.common import draw_humans
 from lib.network.rtpose_vgg import get_model
 
 #from pose import pose_utils
-from pose.pose_utils import draw_pose_from_cords
+from pose.pose_utils import draw_pose_from_cords , draw_texts
 from util.pose_utils import get_outputs, paf_to_pose_cpp, find_peaks
 #from lib.pafprocess import pafprocess
 
@@ -25,11 +26,16 @@ parser.add_argument('--is-gpu',action='store_true',default=torch.cuda.is_availab
 parser.add_argument('--cfg', default='./experiments/vgg19_368x368_sgd.yaml',type=str)
 parser.add_argument('opts',default=None,nargs=argparse.REMAINDER)
 opt = parser.parse_args()
+cfg.MODEL.NUM_JOINTS    = 19
+cfg.MODEL.NUM_KEYPOINTS = 19
 update_config(cfg, opt)
 
-if __name__ == "__main__":
+slow = 0
+#if __name__ == "__main__":
+if slow:
     # from edn ------------------------------------
     slow_model = load_model('./pose/pose_estimator.h5')
+else:
     # from fast -----------------------------------
     weight_name = os.path.join(os.getcwd(), './pose/pose_model.pth')
     model = get_model('vgg19')
@@ -39,12 +45,14 @@ if __name__ == "__main__":
     model.float()
     model.eval()
 
+if __name__=='__main__':
     img_dir = './datasets/test_B'  # Change this line into where your video frames are stored
     pose_dir = img_dir.replace('test_B', 'test_A')
 
     if os.path.isdir(pose_dir):
-        shutil.rmtree(pose_dir)
-    os.mkdir(pose_dir)
+        pass
+        #shutil.rmtree(pose_dir)
+    #os.mkdir(pose_dir)
 
     comped_list = os.listdir(pose_dir)
     img_list = os.listdir(img_dir)
@@ -55,20 +63,47 @@ if __name__ == "__main__":
 
     for item in tqdm(new_list):
         img = imread(os.path.join(img_dir, item))
+        # from edn ------------------------------------
+        if slow:
+            cord = cordinates_from_image_file(img, model=slow_model)
+            #pose_cords.append(cord)
+            color,_ = draw_pose_from_cords(cord, im_shape)
+            #_=[draw_texts(color, str(i), cord[i]) for i in range(len(cord))
+            imsave(os.path.join(pose_dir, item), color)
+            break
         # from fast -----------------------------------
         with torch.no_grad():
             paf, heatmap, im_scale = get_outputs(img, model,'rtpose',is_gpu=opt.is_gpu)
         humans = paf_to_pose_cpp(heatmap, paf, cfg) #
-        cord=[]
-        for bp in humans[0].body_parts.values():
-            bp_x =int( bp.x*im_shape[1] )
-            bp_y =int( bp.y*im_shape[0] )
-            cord.append([bp_x, bp_y])
-        print(cord)
-        #color,_= draw_pose_from_cords(humans, im_shape)
-        #imsave(os.path.join(pose_dir, item), color)
-        # from edn ------------------------------------
-        cord = cordinates_from_image_file(img, model=slow_model)
-        print(cord)
-        #imsave(os.path.join(pose_dir, item), color)
-        #imsave('result1.png', color)
+        if 1:
+            #cord=[[int(bp.y*im_shape[0]),int(bp.x*im_shape[1])] for bp in humans[0].body_parts.values()]
+            each = 0
+            cord = []
+            def mean_bp(c1, c2):
+                return [int((c1[0]+c2[0])/2), int((c1[1]+c2[1])/2)]
+            if humans:
+                for i, bp in humans[0].body_parts.items():
+                    if i==each:
+                        cord.append([int(bp.y*im_shape[0]),int(bp.x*im_shape[1])])
+                    else:
+                        cord.append( [None,None] )
+                    each += 1
+            else:
+                pass
+            #cord.insert(4, [0,0])
+            #cord.insert(5, [0,0])
+            #cord[4] = mean_bp(cord[2],cord[3])
+            #cord[5] = mean_bp(cord[6],cord[7])
+
+            out,_ = draw_pose_from_cords(cord, im_shape)
+
+            # draw number of joints -----------------------
+            #_=[draw_texts(color, str(i), cord[i]) for i in range(len(cord))
+
+            # old draw method 'draw_humans'----------------
+            #imageArray = np.zeros((im_shape[0], im_shape[1], 3), np.uint8)
+            #out = draw_humans(imageArray, humans)
+            #imsave(os.path.join(pose_dir, item), out)#color)
+
+            # save image ----------------------------------
+            imsave(os.path.join(pose_dir, item), out)

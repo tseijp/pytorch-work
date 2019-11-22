@@ -17,7 +17,6 @@ from pose import pose_utils
 from pose.pose_utils import draw_pose_from_cords
 from pose_comp import cordinates_from_image_file
 
-#opt = DemoPoseOption().parse(save=False)
 
 if __name__ == "__main__":
     img_dir = './datasets/test_B'  # Change this line into where your video frames are stored
@@ -26,7 +25,6 @@ if __name__ == "__main__":
     if os.path.isdir(pose_dir):
         shutil.rmtree(pose_dir)
     os.mkdir(pose_dir)
-    #img_dir = img_dir.replace('test_B', 'test_pose')
 
     model = load_model('./pose/pose_estimator.h5')
     comped_list = os.listdir(pose_dir)

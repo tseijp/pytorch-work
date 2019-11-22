@@ -25,7 +25,20 @@ LABELS = ['nose', 'neck', 'Rsho', 'Relb', 'Rwri', 'Lsho', 'Lelb', 'Lwri',
 
 MISSING_VALUE = -1
 
+def draw_texts(img, texts, point,font_scale=0.2, thickness=1):
+    # [ref] (https://qiita.com/yasudadesu/items/dd3e74dcc7e8f72bc680)
+    h, w, c = img.shape
+    offset_x =  point[1]#10  # 左下の座標
+    initial_y = point[0]-10#0
+    dy = int(img.shape[1] / 15)
+    color = (0, 255, 0)  # black
 
+    texts = [texts] if type(texts) == str else texts
+
+    for i, text in enumerate(texts):
+        offset_y = initial_y# + (i+1)*dy
+        cv2.putText(img, text, (offset_x, offset_y), cv2.FONT_HERSHEY_SIMPLEX,
+                    font_scale, color, thickness, cv2.LINE_AA)
 def map_to_cord(pose_map, threshold=0.1):
     all_peaks = [[] for i in range(18)]
     pose_map = pose_map[..., :18]
@@ -52,10 +65,12 @@ def map_to_cord(pose_map, threshold=0.1):
 def cords_to_map(cords, img_size, sigma=6):
     result = np.zeros(img_size + cords.shape[0:1], dtype='float32')
     for i, point in enumerate(cords):
-        if point[0] == MISSING_VALUE or point[1] == MISSING_VALUE:
-            continue
-        xx, yy = np.meshgrid(np.arange(img_size[1]), np.arange(img_size[0]))
-        result[..., i] = np.exp(-((yy - point[0]) ** 2 + (xx - point[1]) ** 2) / (2 * sigma ** 2))
+        try:# wtf
+            if point[0] == MISSING_VALUE or point[1] == MISSING_VALUE:
+                continue
+            xx, yy = np.meshgrid(np.arange(img_size[1]), np.arange(img_size[0]))
+            result[..., i] = np.exp(-((yy-point[0])**2+(xx-point[1])**2)/(2*sigma**2))
+        except:pass
     return result
 
 
@@ -65,20 +80,25 @@ def draw_pose_from_cords(pose_joints, img_size, radius=2, draw_joints=True):
 
     if draw_joints:
         for f, t in LIMB_SEQ:
-            from_missing = pose_joints[f][0] == MISSING_VALUE or pose_joints[f][1] == MISSING_VALUE
-            to_missing = pose_joints[t][0] == MISSING_VALUE or pose_joints[t][1] == MISSING_VALUE
-            if from_missing or to_missing:
-                continue
-            yy, xx, val = line_aa(pose_joints[f][0], pose_joints[f][1], pose_joints[t][0], pose_joints[t][1])
-            colors[yy, xx] = np.expand_dims(val, 1) * 255
-            mask[yy, xx] = True
+            try:# wtf
+                #print('joint:',len(pose_joints), 'LIMB_SEQ',len(LIMB_SEQ), 'COLORS',len(COLORS),'-'*50)
+                from_missing = pose_joints[f][0] == MISSING_VALUE or pose_joints[f][1] == MISSING_VALUE
+                to_missing = pose_joints[t][0] == MISSING_VALUE or pose_joints[t][1] == MISSING_VALUE
+                if from_missing or to_missing:
+                    continue
+                yy, xx, val = line_aa(pose_joints[f][0], pose_joints[f][1], pose_joints[t][0], pose_joints[t][1])
+                colors[yy, xx] = np.expand_dims(val, 1) * 255
+                mask[yy, xx] = True
+            except:pass
 
     for i, joint in enumerate(pose_joints):
-        if pose_joints[i][0] == MISSING_VALUE or pose_joints[i][1] == MISSING_VALUE:
-            continue
-        yy, xx = circle(joint[0], joint[1], radius=radius, shape=img_size)
-        colors[yy, xx] = COLORS[i]
-        mask[yy, xx] = True
+        try:# wtf
+            if pose_joints[i][0] == MISSING_VALUE or pose_joints[i][1] == MISSING_VALUE:
+                continue
+            yy, xx = circle(joint[0], joint[1], radius=radius, shape=img_size)
+            colors[yy, xx] = COLORS[i]
+            mask[yy, xx] = True
+        except:pass
 
     return colors, mask
 
