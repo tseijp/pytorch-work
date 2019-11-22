@@ -44,10 +44,10 @@ class AlignedPairDataset(BaseDataset):
         self.A_paths = sorted(image_folder.make_dataset(self.dir_A))
 
         ### input B (real images)
-        if opt.isTrain:
-            dir_B = '_B' if self.opt.label_nc == 0 else '_img'
-            self.dir_B = os.path.join(opt.dataroot, opt.phase + dir_B)
-            self.B_paths = sorted(image_folder.make_dataset(self.dir_B))
+        #if opt.isTrain:
+        dir_B = '_B' if self.opt.label_nc == 0 else '_img'
+        self.dir_B = os.path.join(opt.dataroot, opt.phase + dir_B)
+        self.B_paths = sorted(image_folder.make_dataset(self.dir_B))
 
         ### instance maps
         if not opt.no_instance:
