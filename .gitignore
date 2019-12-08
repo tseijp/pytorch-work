@@ -1,12 +1,15 @@
 # my changed dir ==========
-Backup/
-tmp/*
+checkpoints
+Backup
+tmp
 
 # pose
 train/
 lib/pafprocess/build/*
 pose/pose_estimator.h5
 pose/pose_model.pth
+evaluate
+experiments
 
 # edn
 demo/

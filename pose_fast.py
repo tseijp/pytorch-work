@@ -1,4 +1,5 @@
 import os
+import cv2
 import shutil
 import numpy as np
 from tqdm import tqdm
@@ -29,7 +30,7 @@ opt = parser.parse_args()
 cfg.MODEL.NUM_JOINTS    = 19
 cfg.MODEL.NUM_KEYPOINTS = 19
 update_config(cfg, opt)
-
+opt.is_gpu = True
 slow = 0
 #if __name__ == "__main__":
 if slow:
@@ -49,20 +50,21 @@ if __name__=='__main__':
     img_dir = './datasets/test_B'  # Change this line into where your video frames are stored
     pose_dir = img_dir.replace('test_B', 'test_A')
 
-    if os.path.isdir(pose_dir):
-        pass
+    #if not os.path.isdir(pose_dir):
+    #    os.mkdir(pose_dir)
         #shutil.rmtree(pose_dir)
-    #os.mkdir(pose_dir)
+
 
     comped_list = os.listdir(pose_dir)
+    _=[os.remove(os.path.join(pose_dir,  f)) for f in comped_list]
     img_list = os.listdir(img_dir)
-    new_list = [i for i in img_list if not i in comped_list]
+    #new_list = [i for i in img_list if not i in comped_list]
 
-    tmp = imread(os.path.join(img_dir, img_list[0]))
+    tmp = cv2.imread(os.path.join(img_dir, img_list[0]))
     im_shape = tmp.shape[:-1]
 
-    for item in tqdm(new_list):
-        img = imread(os.path.join(img_dir, item))
+    for item in tqdm(img_list):
+        img = cv2.imread(os.path.join(img_dir, item))
         # from edn ------------------------------------
         if slow:
             cord = cordinates_from_image_file(img, model=slow_model)

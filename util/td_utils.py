@@ -11,50 +11,49 @@ class Socket:
     def __init__(self,opt):
         self.port= opt.port if opt.port else 7001
         self.cmd = opt.cmd  if opt.cmd  else "python --version"
-        self.msg = opt.msg.strip('"')  if opt.msg  else "test"
+        self.msg = opt.msg.strip('"')  if opt.msg  else ""
         self.dir = opt.dir.strip('"').strip(' ')  if opt.dir  else DIRECTORY
         self.ip  = opt.ip .strip('"').strip(' ')  if opt.ip   else "127.0.0.1"
         self.s  = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # sub
         self.sleep=float(opt.sleep) if opt.sleep else 0
 
-        if 1:#msg:
-            self.send_msg(self.dir)
-            self.send_msg('port:%s,cmd:%s,ip:%s'%(self.port,self.cmd,self.ip))
     def send_msg(self, msg='no message'):
         text = msg.encode('utf-8') if type(msg) is str else msg
         print(text)
         self.s.sendto(text, (self.ip, int(self.port)))
 
     def run(self):
-        self.send_msg('/%sStarted%s/'%('*'*20,'*'*20))
+        self.send_msg('%sstarted%s'%('*'*20,'*'*20))
+        if 0:#msg:
+            self.send_msg(self.msg)
+        self.send_msg('port:%s,ip:%s,cmd:%s'%(self.port,self.ip,self.cmd))
         if os.path.isdir(self.dir) is False:
             self.send_msg("%s"%os.path.isdir(self.dir))
             self.send_msg("Error : there is no dir %s"%self.dir)
             return
         # main process ---------------------------------------------------------
-        try:
+        if 1:#try:
             self.send_msg('%s'%self.cmd)
-            sub = subprocess.Popen(self.cmd,#cmd_list,
+            proc = subprocess.Popen(self.cmd,#cmd_list,
                 cwd=self.dir, shell=True,
-                #stdout = subprocess.PIPE,
+                stdout = subprocess.PIPE,
                 #stderr = subprocess.PIPE,
                 universal_newlines=True,
                 bufsize=0)#[ref](https://janakiev.com/blog/python-shell-commands/)
-
+            self.send_msg('pid:%s is running'%(proc.pid))
             if self.sleep>0:
                 time.sleep(self.sleep)
-
             # good 1---------------------
             #for line in iter(proc.stdout.readline, b''):
             #    print(line.rstrip())
             # good 2---------------------
-            #while True:
-                #line = proc.stdout.readline()
-                #if line:
-                #    self.send_msg(line)
-                #if not line and proc.poll() is not None:
-                #    break
+            while True:
+                line = proc.stdout.readline()
+                if line:
+                    self.send_msg(line)
+                if not line and proc.poll() is not None:
+                    break
             # good 3---------------------
             #while True:
             #    output = process.stdout.readline()
@@ -65,11 +64,11 @@ class Socket:
             #        for output in process.stdout.readlines():
             #            print(output.strip()) # Process has finished, read rest of the output
             #        break
-        except:
-            import traceback
-            self.send_msg('[Error] in main process of Socket.run():%s'%traceback.format_exc())
+        #except:
+        #    import traceback
+        #    self.send_msg('[Error] in main process of Socket.run():%s'%traceback.format_exc())
         # ----------------------------------------------------------------------
-        self.send_msg('/%sFinished%s/'%('*'*20,'*'*20))
+        self.send_msg('%sfinished%s'%('*'*20,'*'*20))
 
 class SocketOption:
     def __init__(self):
